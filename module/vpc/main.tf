@@ -58,21 +58,21 @@ resource "aws_internet_gateway" "igw" {
   }
 }
 
-# # elastic ip
-# resource "aws_eip" "nat_eip" {
-#   vpc                       = true
-#   depends_on = [aws_internet_gateway.igw]
-# }
+# elastic ip
+resource "aws_eip" "nat_eip" {
+  vpc                       = true
+  depends_on = [aws_internet_gateway.igw]
+}
 
-# # NAT gateway
-# resource "aws_nat_gateway" "natgw" {
-#   allocation_id = aws_eip.nat_eip.id
-#   subnet_id     = aws_subnet.public_subnet1.id
+# NAT gateway
+resource "aws_nat_gateway" "natgw" {
+  allocation_id = aws_eip.nat_eip.id
+  subnet_id     = aws_subnet.public_subnet1.id
 
-#   tags = {
-#     Name = "${local.name}-natgw"
-#   }
-# }
+  tags = {
+    Name = "${local.name}-natgw"
+  }
+}
 
 # Public Route Table
 resource "aws_route_table" "public_RT" {
@@ -123,3 +123,8 @@ resource "aws_route_table_association" "public_subnet2" {
 #   subnet_id      = aws_subnet.private_subnet2.id
 #   route_table_id = aws_route_table.private_RT.id
 # }
+
+resource "aws_key_pair" "key-pair" {
+  key_name   = var.key_name
+  public_key = var.public_key
+}
