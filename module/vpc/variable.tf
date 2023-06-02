@@ -29,3 +29,16 @@ variable "priv_sub2_cidr" {
 variable "all_cidr" {
   default = "0.0.0.0/0"
 }
+
+variable "key_name" {
+  default = "benny_keypair"
+}
+
+variable "public_key" {
+  default = "file(~/Keypairs/pacpaad.pub)"
+}
+
+variable "private_key" {
+  default = "file(~/Keypairs/pacpaad)"
+}
+
