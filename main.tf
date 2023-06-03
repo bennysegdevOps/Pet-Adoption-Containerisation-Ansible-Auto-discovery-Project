@@ -43,7 +43,15 @@ module "security-group" {
   tag-Sonarqube-SG    = "${local.name}-Sonarqube-SG"
   tag-Nexus-SG        = "${local.name}-Nexus-SG"
   tag-MySQL-SG        = "${local.name}-MySQL-SG"
-
-
-  
 }
+
+module "bastion-host" {
+  source = "./module/bastion-host"
+  ami = "ami-013d87f7217614e10"
+  instance-type = "t2.micro"
+  key-name = "benny_keypair"
+  security-group = module.security-group.Bastion-Ansible_SG-id
+  subnetid = module.vpc.public_subnet1_id
+  tag-bastion-host =  "${local.name}-bastion"
+}
+
