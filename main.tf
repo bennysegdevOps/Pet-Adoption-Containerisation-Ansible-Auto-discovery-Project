@@ -46,12 +46,22 @@ module "security-group" {
 }
 
 module "bastion-host" {
-  source = "./module/bastion-host"
-  ami = "ami-013d87f7217614e10"
-  instance-type = "t2.micro"
-  key-name = "benny_keypair"
-  security-group = module.security-group.Bastion-Ansible_SG-id
-  subnetid = module.vpc.public_subnet1_id
-  tag-bastion-host =  "${local.name}-bastion"
+  source            = "./module/bastion-host"
+  ami               = "ami-013d87f7217614e10"
+  instance-type     = "t2.micro"
+  key-name          = "benny_keypair"
+  security-group    = module.security-group.Bastion-Ansible_SG-id
+  subnetid          = module.vpc.public_subnet1_id
+  tag-bastion-host  =  "${local.name}-bastion"
+}
+
+module "sonarqube" {
+  source            = "./module/sonarqube"
+  ami               = "ami-01dd271720c1ba44f" 
+  instance-type     = "t2.medium"
+  key-name          = "benny_keypair"
+  security-group    = module.security-group.Sonarqube-SG-id
+  subnetid          = module.vpc.public_subnet1_id
+  tag-sonarqube-server = "${local.name}-sonarqube"
 }
 
