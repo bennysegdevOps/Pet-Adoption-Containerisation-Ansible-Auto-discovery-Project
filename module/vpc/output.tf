@@ -26,7 +26,7 @@ output "elastic_id" {
   value = aws_eip.nat_eip.id
 }
 
-output "natgw" {
+output "natgw_id" {
   value = aws_nat_gateway.natgw.id
 }
 
