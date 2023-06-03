@@ -1,37 +1,16 @@
-variable "all_cidr" {
-  default = "0.0.0.0/0"
-}
+variable "all_cidr" {}
+variable "vpc-id" {}
+variable "port_ssh" {}
+variable "port_proxy" {}  #proxy port for Jenkins and Docker 
+variable "port_http" {}
+variable "port_https" {}
+variable "port_sonar" {}
+variable "port_proxy_nexus" {}
+variable "port_mysql" {}
+variable "tag-Bastion-Ansible-SG" {}
+variable "tag-Docker-SG" {}
+variable "tag-Jenkins-SG" {}
+variable "tag-Sonarqube-SG" {}
+variable "tag-Nexus-SG" {}
+variable "tag-MySQL-SG" {}
 
-variable "port_ssh" {
-  default = "22"
-}
-
-# proxy port for Jenkins and Docker 
-variable "port_proxy" {
-  default = "8080"
-}
-
-# http port access
-variable "port_http" {
-  default = "80"
-}
-
-# https port access
-variable "port_https" {
-  default = "443"
-}
-
-# sonarqube port access
-variable "port_sonar" {
-  default = "9000"
-}
-
-# nexus port access
-variable "port_proxy_nexus" {
-  default = "8081"
-}
-
-# Mysql port access
-variable "port_mysql" {
-  default = "3306"
-}
