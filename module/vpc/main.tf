@@ -4,7 +4,7 @@ resource "aws_vpc" "main" {
   instance_tenancy = "default"
 
   tags = {
-    Name = "${local.name}-vpc"
+    Name = var.tag-vpc
   }
 }
 
@@ -15,7 +15,7 @@ resource "aws_subnet" "public_subnet1" {
   availability_zone = var.availability_zone_1
 
   tags = {
-    Name = "${local.name}-public_subnet1"
+    Name = var.tag-public_subnet1
   }
 }
 
@@ -25,7 +25,7 @@ resource "aws_subnet" "public_subnet2" {
   availability_zone = var.availability_zone_2
 
   tags = {
-    Name = "${local.name}-public_subnet2"
+    Name = var.tag-public_subnet2
   }
 }
 
@@ -35,7 +35,7 @@ resource "aws_subnet" "private_subnet1" {
   availability_zone = var.availability_zone_1
 
   tags = {
-    Name = "${local.name}-private_subnet1"
+    Name = var.tag-private_subnet1
   }
 }
 
@@ -45,7 +45,7 @@ resource "aws_subnet" "private_subnet2" {
   availability_zone = var.availability_zone_2
 
   tags = {
-    Name = "${local.name}-private_subnet2"
+    Name = var.tag-private_subnet2
   }
 }
 
@@ -54,7 +54,7 @@ resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main.id
 
   tags = {
-    Name = "${local.name}-igw"
+    Name = var.tag-igw
   }
 }
 
@@ -70,7 +70,7 @@ resource "aws_nat_gateway" "natgw" {
   subnet_id     = aws_subnet.public_subnet1.id
 
   tags = {
-    Name = "${local.name}-natgw"
+    Name = var.tag-natgw
   }
 }
 
@@ -84,23 +84,23 @@ resource "aws_route_table" "public_RT" {
   }
 
   tags = {
-    Name = "${local.name}-public_RT"
+    Name = var.tag-public_RT
   }
 }
 
-# # Private Route Table
-# resource "aws_route_table" "private_RT" {
-#   vpc_id = aws_vpc.main.id
+# Private Route Table
+resource "aws_route_table" "private_RT" {
+  vpc_id = aws_vpc.main.id
 
-#   route {
-#     cidr_block = var.all_cidr
-#     gateway_id = aws_nat_gateway.natgw.id
-#   }
+  route {
+    cidr_block = var.all_cidr
+    gateway_id = aws_nat_gateway.natgw.id
+  }
 
-#   tags = {
-#     Name = "${local.name}-private_RT"
-#   }
-# }
+  tags = {
+    Name = var.tag-private_RT
+  }
+}
 
 # Public Route Table Association 
 resource "aws_route_table_association" "public_subnet1" {
@@ -113,16 +113,16 @@ resource "aws_route_table_association" "public_subnet2" {
   route_table_id = aws_route_table.public_RT.id
 }
 
-# # Private Route Table Association 
-# resource "aws_route_table_association" "private_subnet1" {
-#   subnet_id      = aws_subnet.private_subnet1.id
-#   route_table_id = aws_route_table.private_RT.id
-# }
+# Private Route Table Association 
+resource "aws_route_table_association" "private_subnet1" {
+  subnet_id      = aws_subnet.private_subnet1.id
+  route_table_id = aws_route_table.private_RT.id
+}
 
-# resource "aws_route_table_association" "private_subnet2" {
-#   subnet_id      = aws_subnet.private_subnet2.id
-#   route_table_id = aws_route_table.private_RT.id
-# }
+resource "aws_route_table_association" "private_subnet2" {
+  subnet_id      = aws_subnet.private_subnet2.id
+  route_table_id = aws_route_table.private_RT.id
+}
 
 resource "aws_key_pair" "key-pair" {
   key_name   = var.key_name
