@@ -1,7 +1,3 @@
-locals {
-  name = "benny-pacpaad"
-}
-
 module "vpc" {
   source              = "./module/vpc"
   vpc_cidr            = "10.0.0.0/16"
@@ -37,6 +33,8 @@ module "security-group" {
   port_sonar          = "9000"
   port_proxy_nexus    = "8081"
   port_mysql          = "3306"
+  priv_sub1_cidr      = "10.0.3.0/24"
+  priv_sub2_cidr      = "10.0.4.0/24"
   tag-Bastion-Ansible-SG = "${local.name}-Bastion-Ansible-SG"
   tag-Docker-SG       = "${local.name}-Docker-SG"
   tag-Jenkins-SG      = "${local.name}-Jenkins-SG"
@@ -47,21 +45,32 @@ module "security-group" {
 
 module "bastion-host" {
   source            = "./module/bastion-host"
-  ami               = "ami-013d87f7217614e10"
+  ami_redhat        = "ami-013d87f7217614e10"
   instance-type     = "t2.micro"
   key-name          = "benny_keypair"
   security-group    = module.security-group.Bastion-Ansible_SG-id
   subnetid          = module.vpc.public_subnet1_id
-  tag-bastion-host  =  "${local.name}-bastion"
+  private_key       = "file(~/Keypairs/pacpaad)"
+  tag-bastion       =  "${local.name}-bastion"
 }
 
 module "sonarqube" {
   source            = "./module/sonarqube"
-  ami               = "ami-01dd271720c1ba44f" 
+  ami_ubuntu        = "ami-01dd271720c1ba44f" 
   instance-type     = "t2.medium"
   key-name          = "benny_keypair"
   security-group    = module.security-group.Sonarqube-SG-id
   subnetid          = module.vpc.public_subnet1_id
-  tag-sonarqube-server = "${local.name}-sonarqube"
+  tag-sonarqube     = "${local.name}-sonarqube"
 }
 
+module "ansible" {
+  source            = "./module/ansible"
+  ami_redhat        = "ami-013d87f7217614e10"
+  instance_type     = "t2.medium"
+  key-name          = "benny_keypair"
+  security-group    = module.security-group.Bastion-Ansible_SG-id
+  subnetid          = module.vpc.public_subnet2_id
+  ansible-server    = "${local.name}-ansible"
+
+}

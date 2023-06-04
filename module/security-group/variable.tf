@@ -13,4 +13,5 @@ variable "tag-Jenkins-SG" {}
 variable "tag-Sonarqube-SG" {}
 variable "tag-Nexus-SG" {}
 variable "tag-MySQL-SG" {}
-
+variable "priv_sub1_cidr" {}
+variable "priv_sub2_cidr" {}

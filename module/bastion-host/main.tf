@@ -1,5 +1,5 @@
 resource "aws_instance" "bastion-host" {
-  ami                             = var.ami 
+  ami                             = var.ami_redhat
   instance_type                   = var.instance-type
   key_name                        = var.key-name
   vpc_security_group_ids          = [var.security-group]

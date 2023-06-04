@@ -1,5 +1,5 @@
-resource "aws_instance" "sonarqube-server" {
-  ami                         = var.ami
+resource "aws_instance" "sonarqube" {
+  ami                         = var.ami_ubuntu
   instance_type               = var.instance-type
   key_name                    = var.key-name
   vpc_security_group_ids      = [var.security-group]
@@ -9,6 +9,6 @@ resource "aws_instance" "sonarqube-server" {
   user_data                   = local.sonarqube_user_data
 
   tags = {
-    Name = var.tag-sonarqube-server
+    Name = var.tag-sonarqube
   }
 }
