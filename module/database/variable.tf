@@ -1,0 +1,13 @@
+variable "subnetid1" {}
+variable "subnetid2" {}
+variable "tag-db-subnet-group" {}
+variable "db_identifier" {}
+variable "security_group" {}
+variable "db_name" {}
+variable "db_engine" {}
+variable "db_engine_version" {}
+variable "db_instance_class" {}
+variable "db_username" {}
+variable "db_password" {}
+variable "db_parameter_gp_name" {}
+variable "db_storage_type" {}
