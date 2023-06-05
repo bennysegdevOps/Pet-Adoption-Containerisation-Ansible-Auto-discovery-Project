@@ -98,7 +98,10 @@ module "nexus" {
 
 module "route53-stage" {
   source            = "./module/route53-stage"
+  domain_name       = "wehabot.com"
+  domain_name2      = "*.wehabot.com"
   stage_domain_name = "stage.wehabot.com"
+  prod_domain_name  = "prod.wehabot.com"
   dns_name          = 
   zone_id           = 
 }
