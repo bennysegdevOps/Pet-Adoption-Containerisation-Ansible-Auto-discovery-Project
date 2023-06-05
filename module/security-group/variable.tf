@@ -6,6 +6,7 @@ variable "port_http" {}
 variable "port_https" {}
 variable "port_sonar" {}
 variable "port_proxy_nexus" {}
+variable "port_proxy_nexus2" {}
 variable "port_mysql" {}
 variable "tag-Bastion-Ansible-SG" {}
 variable "tag-Docker-SG" {}

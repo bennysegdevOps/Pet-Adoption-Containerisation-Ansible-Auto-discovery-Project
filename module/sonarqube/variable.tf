@@ -1,6 +1,6 @@
 variable "ami_ubuntu" {}
 variable "instance-type" {}
 variable "key-name" {}
-variable "security-group" {}
+variable "sonarqube-SG" {}
 variable "subnetid" {}
 variable "tag-sonarqube" {}

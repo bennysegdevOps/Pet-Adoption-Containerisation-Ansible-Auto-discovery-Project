@@ -1,7 +1,7 @@
 # database subnet group
 resource "aws_db_subnet_group" "db-subnet" {
   name       = "db-subnet-group"
-  subnet_ids = [var.subnetid1 , var.subnetid2]
+  subnet_ids = [var.subnetids]
 
   tags = {
     Name = var.tag-db-subnet-group
@@ -12,7 +12,7 @@ resource "aws_db_subnet_group" "db-subnet" {
 resource "aws_db_instance" "mysql_db" {
   identifier                = var.db_identifier
   db_subnet_group_name      = aws_db_subnet_group.db-subnet.name
-  vpc_security_group_ids    = [var.security_group]
+  vpc_security_group_ids    = [var.RDS-SG]
   publicly_accessible       = false 
   skip_final_snapshot       = true
   allocated_storage         = 10
