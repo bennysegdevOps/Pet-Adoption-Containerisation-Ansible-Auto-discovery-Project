@@ -32,6 +32,7 @@ module "security-group" {
   port_https          = "443"
   port_sonar          = "9000"
   port_proxy_nexus    = "8081"
+  port_proxy_nexus2    = "8085"
   port_mysql          = "3306"
   priv_sub1_cidr      = "10.0.3.0/24"
   priv_sub2_cidr      = "10.0.4.0/24"
@@ -48,7 +49,7 @@ module "bastion-host" {
   ami_redhat        = "ami-013d87f7217614e10"
   instance-type     = "t2.micro"
   key-name          = "benny_keypair"
-  security-group    = module.security-group.Bastion-Ansible_SG-id
+  bastion-SG        = module.security-group.Bastion-Ansible_SG-id
   subnetid          = module.vpc.public_subnet1_id
   private_key       = "file(~/Keypairs/pacpaad)"
   tag-bastion       =  "${local.name}-bastion"
@@ -59,7 +60,7 @@ module "sonarqube" {
   ami_ubuntu        = "ami-01dd271720c1ba44f" 
   instance-type     = "t2.medium"
   key-name          = "benny_keypair"
-  security-group    = module.security-group.Sonarqube-SG-id
+  sonarqube-SG      = module.security-group.Sonarqube-SG-id
   subnetid          = module.vpc.public_subnet1_id
   tag-sonarqube     = "${local.name}-sonarqube"
 }
@@ -69,7 +70,7 @@ module "ansible" {
   ami_redhat        = "ami-013d87f7217614e10"
   instance_type     = "t2.medium"
   key-name          = "benny_keypair"
-  security-group    = module.security-group.Bastion-Ansible_SG-id
+  ansible-SG        = module.security-group.Bastion-Ansible_SG-id
   subnetid          = module.vpc.public_subnet2_id
   ansible-server    = "${local.name}-ansible"
 }
@@ -79,7 +80,7 @@ module "jenkins" {
   ami_redhat      = "ami-013d87f7217614e10"
   instance_type   = "t2.medium"
   key_name        = "benny_keypair"
-  security_group  = module.security-group.Jenkins-SG-id
+  jenkins-SG      = module.security-group.Jenkins-SG-id
   subnetid        = module.vpc.private_subnet1_id
   tag-jenkins     = "${local.name}-jenkins"
   nr_license_key  = "c605530d3bdfc50e00542ec7f199be7efebaNRAL"
@@ -90,7 +91,7 @@ module "nexus" {
   ami_redhat      = "ami-013d87f7217614e10"
   instance_type   = "t2.medium"
   key_name        = "benny_keypair"
-  security_group  = module.security-group.Nexus-SG-id
+  nexus-SG        = module.security-group.Nexus-SG-id
   subnetid        = module.vpc.public_subnet2_id
   tag-nexus       = "${local.name}-nexus"
   nr_license_key  = "c605530d3bdfc50e00542ec7f199be7efebaNRAL"
@@ -98,11 +99,10 @@ module "nexus" {
 
 module "database" {
   source                      = "./module/database"
-  subnetid1                   = module.vpc.private_subnet1_id
-  subnetid2                   = module.vpc.private_subnet2_id
+  subnetids                   = [module.vpc.private_subnet1_id , module.vpc.private_subnet2_id]
   tag-db-subnet-group         = "${local.name}-dbsubnet-group"
   db_identifier               = "pacpaad-db"
-  security_group              = module.security-group.MySQL-SG-id
+  RDS-SG                      = module.security-group.MySQL-SG-id
   db_name                     = "auto-discovery-db"
   db_engine                   = "mysql"
   db_engine_version           = "5.7"
@@ -121,4 +121,18 @@ module "route53-stage" {
   prod_domain_name  = "prod.wehabot.com"
   dns_name          = 
   zone_id           = 
+}
+
+module "stage-alb" {
+  source        = "./module/stage-alb"
+  tg-name       = "${local.name}-stage-tg"
+  port_proxy    = "8080"
+  vpc_id        = module.vpc.vpc_id
+  stage-alb     = "${local.name}-stage-alb"
+  alb-SG        = module.security-group.Docker-SG-id
+  subnetids     = [module.vpc.public_subnet1_id , module.vpc.public_subnet2_id]
+  port_http     = "80"
+  port_https    = "443"
+  cert-arn      = 
+  
 }

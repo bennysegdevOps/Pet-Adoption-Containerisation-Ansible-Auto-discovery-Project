@@ -1,0 +1,9 @@
+variable "tg-name" {}
+variable "port_proxy" {}
+variable "vpc_id" {}
+variable "stage-alb" {}
+variable "alb-SG" {}
+variable "subnetids" {}
+variable "port_http" {}
+variable "port_https" {}
+variable "cert-arn" {}

@@ -1,8 +1,7 @@
-variable "subnetid1" {}
-variable "subnetid2" {}
+variable "subnetids" {}
 variable "tag-db-subnet-group" {}
 variable "db_identifier" {}
-variable "security_group" {}
+variable "RDS-SG" {}
 variable "db_name" {}
 variable "db_engine" {}
 variable "db_engine_version" {}

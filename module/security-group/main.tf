@@ -164,6 +164,14 @@ resource "aws_security_group" "Nexus_SG" {
     cidr_blocks      = [var.all_cidr]
   }
 
+  ingress {
+    description      = "Allow nexus access -port 2"
+    from_port        = var.port_proxy_nexus2
+    to_port          = var.port_proxy_nexus2
+    protocol         = "tcp"
+    cidr_blocks      = [var.all_cidr]
+  }
+
   egress {
     from_port        = 0
     to_port          = 0

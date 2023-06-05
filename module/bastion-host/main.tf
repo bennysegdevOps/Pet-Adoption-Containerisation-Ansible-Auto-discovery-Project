@@ -2,7 +2,7 @@ resource "aws_instance" "bastion-host" {
   ami                             = var.ami_redhat
   instance_type                   = var.instance-type
   key_name                        = var.key-name
-  vpc_security_group_ids          = [var.security-group]
+  vpc_security_group_ids          = [var.bastion-SG]
   subnet_id                       = var.subnetid
   associate_public_ip_address     = true
   user_data                       = <<-EOF
