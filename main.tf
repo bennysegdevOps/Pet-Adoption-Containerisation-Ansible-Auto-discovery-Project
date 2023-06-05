@@ -72,5 +72,36 @@ module "ansible" {
   security-group    = module.security-group.Bastion-Ansible_SG-id
   subnetid          = module.vpc.public_subnet2_id
   ansible-server    = "${local.name}-ansible"
+}
 
+module "jenkins" {
+  source          = "./module/jenkins"
+  ami_redhat      = "ami-013d87f7217614e10"
+  instance_type   = "t2.medium"
+  key_name        = "benny_keypair"
+  security_group  = module.security-group.Jenkins-SG-id
+  subnetid        = module.vpc.private_subnet1_id
+  tag-jenkins     = "${local.name}-jenkins"
+  nr_license_key  = "c605530d3bdfc50e00542ec7f199be7efebaNRAL"
+}
+
+module "nexus" {
+  source = "./module/nexus"
+  ami_redhat      = "ami-013d87f7217614e10"
+  instance_type   = "t2.medium"
+  key_name        = "benny_keypair"
+  security_group  = module.security-group.Nexus-SG-id
+  subnetid        = module.vpc.public_subnet2_id
+  tag-nexus       = "${local.name}-nexus"
+  nr_license_key  = "c605530d3bdfc50e00542ec7f199be7efebaNRAL"
+}
+
+module "route53-stage" {
+  source            = "./module/route53-stage"
+  domain_name       = "wehabot.com"
+  domain_name2      = "*.wehabot.com"
+  stage_domain_name = "stage.wehabot.com"
+  prod_domain_name  = "prod.wehabot.com"
+  dns_name          = 
+  zone_id           = 
 }
