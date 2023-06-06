@@ -99,7 +99,8 @@ module "nexus" {
 
 module "database" {
   source                      = "./module/database"
-  subnetids                   = [module.vpc.private_subnet1_id , module.vpc.private_subnet2_id]
+  subnet1-id                  = module.vpc.private_subnet1_id
+  subnet2-id                  = module.vpc.private_subnet2_id
   tag-db-subnet-group         = "${local.name}-dbsubnet-group"
   db_identifier               = "pacpaad-db"
   RDS-SG                      = module.security-group.MySQL-SG-id
@@ -113,14 +114,16 @@ module "database" {
   db_storage_type             = "gp2"
 }
 
-module "route53-stage" {
-  source            = "./module/route53-stage"
+module "route53" {
+  source            = "./module/route53"
   domain_name       = "wehabot.com"
   domain_name2      = "*.wehabot.com"
   stage_domain_name = "stage.wehabot.com"
   prod_domain_name  = "prod.wehabot.com"
-  dns_name          = 
-  zone_id           = 
+  dns_name          = module.stage-alb.stage-alb-dns
+  zone_id           = module.stage-alb.stage-alb-zone_id
+  dns_name2         = module.prod-alb.prod-alb-dns
+  zone_id2          = module.prod-alb.prod-alb-zone_id
 }
 
 module "stage-alb" {
@@ -130,9 +133,23 @@ module "stage-alb" {
   vpc_id        = module.vpc.vpc_id
   stage-alb     = "${local.name}-stage-alb"
   alb-SG        = module.security-group.Docker-SG-id
-  subnetids     = [module.vpc.public_subnet1_id , module.vpc.public_subnet2_id]
+  subnet1-id    = module.vpc.public_subnet1_id
+  subnet2-id    = module.vpc.public_subnet2_id
   port_http     = "80"
   port_https    = "443"
-  cert-arn      = 
-  
+  cert-arn      = module.route53.cert-arn
+}
+
+module "prod-alb" {
+  source        = "./module/prod-alb"
+  prod-tg       = "${local.name}-prod-tg"
+  port_proxy    = "8080"
+  vpc_id        = module.vpc.vpc_id
+  prod-alb      = "${local.name}-prod-alb"
+  alb-SG        = module.security-group.Docker-SG-id
+  subnet1-id    = module.vpc.public_subnet1_id
+  subnet2-id    = module.vpc.public_subnet2_id
+  port_http     = "80"
+  port_https    = "443"
+  cert-arn      = module.route53.cert-arn
 }

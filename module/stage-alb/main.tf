@@ -18,7 +18,7 @@ resource "aws_lb" "stage-alb" {
   internal                    = false
   load_balancer_type          = "application"
   security_groups             = [var.alb-SG]
-  subnets                     = [var.subnetids]
+  subnets                     = [var.subnet1-id , var.subnet2-id]
   enable_deletion_protection  = false
   tags = {
   Name                        = var.stage-alb
