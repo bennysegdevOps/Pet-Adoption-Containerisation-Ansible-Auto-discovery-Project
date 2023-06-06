@@ -48,7 +48,7 @@ module "bastion-host" {
   source            = "./module/bastion-host"
   ami_redhat        = "ami-013d87f7217614e10"
   instance-type     = "t2.micro"
-  key-name          = "benny_keypair"
+  key-name          = module.vpc.key_name
   bastion-SG        = module.security-group.Bastion-Ansible_SG-id
   subnetid          = module.vpc.public_subnet1_id
   private_key       = "file(~/Keypairs/pacpaad)"
@@ -59,7 +59,7 @@ module "sonarqube" {
   source            = "./module/sonarqube"
   ami_ubuntu        = "ami-01dd271720c1ba44f" 
   instance-type     = "t2.medium"
-  key-name          = "benny_keypair"
+  key-name          = module.vpc.key_name
   sonarqube-SG      = module.security-group.Sonarqube-SG-id
   subnetid          = module.vpc.public_subnet1_id
   tag-sonarqube     = "${local.name}-sonarqube"
@@ -69,7 +69,7 @@ module "ansible" {
   source            = "./module/ansible"
   ami_redhat        = "ami-013d87f7217614e10"
   instance_type     = "t2.medium"
-  key-name          = "benny_keypair"
+  key-name          = module.vpc.key_name
   ansible-SG        = module.security-group.Bastion-Ansible_SG-id
   subnetid          = module.vpc.public_subnet2_id
   ansible-server    = "${local.name}-ansible"
@@ -79,18 +79,28 @@ module "jenkins" {
   source          = "./module/jenkins"
   ami_redhat      = "ami-013d87f7217614e10"
   instance_type   = "t2.medium"
-  key_name        = "benny_keypair"
+  key_name        = module.vpc.key_name
   jenkins-SG      = module.security-group.Jenkins-SG-id
   subnetid        = module.vpc.private_subnet1_id
   tag-jenkins     = "${local.name}-jenkins"
   nr_license_key  = "c605530d3bdfc50e00542ec7f199be7efebaNRAL"
 }
 
+module "jenkins-lb" {
+  source = "./module/jenkins-lb"
+  jenkins-alb = "${local.name}-jenkins-lb"
+  jenkins-SG = module.security-group.Jenkins-SG-id
+  subnet-id = module.vpc.public_subnet1_id
+  jenkins_instance = module.jenkins.jenkins_server
+  port_proxy = "8080"
+  port_http = "80"
+}
+
 module "nexus" {
   source          = "./module/nexus"
   ami_redhat      = "ami-013d87f7217614e10"
   instance_type   = "t2.medium"
-  key_name        = "benny_keypair"
+  key_name        = module.vpc.key_name
   nexus-SG        = module.security-group.Nexus-SG-id
   subnetid        = module.vpc.public_subnet2_id
   tag-nexus       = "${local.name}-nexus"
