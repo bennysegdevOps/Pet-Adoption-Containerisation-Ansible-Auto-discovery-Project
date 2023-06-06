@@ -22,8 +22,8 @@ resource "aws_route53_record" "prod" {
   name                      = var.prod_domain_name
   type                      = "A"
   alias {
-    name                    = var.dns_name
-    zone_id                 = var.zone_id
+    name                    = var.dns_name2
+    zone_id                 = var.zone_id2
     evaluate_target_health  = true
   }
 }

@@ -1,4 +1,5 @@
-variable "subnetids" {}
+variable "subnet1-id" {}
+variable "subnet2-id" {}
 variable "tag-db-subnet-group" {}
 variable "db_identifier" {}
 variable "RDS-SG" {}

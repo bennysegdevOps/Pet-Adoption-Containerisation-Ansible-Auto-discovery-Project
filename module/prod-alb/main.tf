@@ -1,6 +1,6 @@
 #Target group for Docker load Balancer
 resource "aws_lb_target_group" "target_group" {
-  name     = var.tg-name
+  name     = var.prod-tg
   port     = var.port_proxy
   protocol = "HTTP"
   vpc_id   = var.vpc_id
@@ -14,14 +14,14 @@ resource "aws_lb_target_group" "target_group" {
 
 # Production Environment Application Load Balancer
 resource "aws_lb" "prod-alb" {
-  name                        = var.alb-name
+  name                        = var.prod-alb
   internal                    = false
   load_balancer_type          = "application"
   security_groups             = [var.alb-SG]
-  subnets                     = [var.subnetids]
+  subnets                     = [var.subnet1-id , var.subnet2-id]
   enable_deletion_protection  = false
   tags = {
-  Name                        = var.tag-prod-alb
+  Name                        = var.prod-alb
   }
 }
 

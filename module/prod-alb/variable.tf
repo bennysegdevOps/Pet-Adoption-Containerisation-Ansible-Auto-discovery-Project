@@ -1,9 +1,10 @@
-variable "tg-name" {}
+variable "prod-tg" {}
 variable "port_proxy" {}
 variable "vpc_id" {}
-variable "alb-name" {}
+variable "prod-alb" {}
 variable "alb-SG" {}
-variable "subnetids" {}
-variable "tag-prod-alb" {}
+variable "subnet1-id" {}
+variable "subnet2-id" {}
+variable "port_http" {}
 variable "port_https" {}
 variable "cert-arn" {}
