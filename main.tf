@@ -84,6 +84,7 @@ module "jenkins" {
   subnetid        = module.vpc.private_subnet1_id
   tag-jenkins     = "${local.name}-jenkins"
   nr_license_key  = "c605530d3bdfc50e00542ec7f199be7efebaNRAL"
+  nexus-ip        = module.nexus.nexus_public_ip
 }
 
 module "jenkins-lb" {
@@ -162,4 +163,34 @@ module "prod-alb" {
   port_http     = "80"
   port_https    = "443"
   cert-arn      = module.route53.cert-arn
+}
+
+module "asg-stage" {
+  source                = "./module/asg-stage"
+  stage-lt-name         = "${local.name}-stage-LT"
+  ami-redhat-id         = "ami-013d87f7217614e10"
+  instance_type         = "t2.medium"
+  stage-lt-sg           = [module.security-group.Docker-SG-id]
+  keypair_name          = module.vpc.key_name
+  stage-asg-name        = "${local.name}-stage-ASG"
+  vpc-zone-identifier   = [module.vpc.private_subnet1_id , module.vpc.private_subnet2_id]
+  tg-arn                = [module.stage-alb.stage-target-group-arn]
+  asg-policy            = "${local.name}-stage-asg-policy"
+  nexus-ip              = module.nexus.nexus_public_ip
+  nr_key                = "c605530d3bdfc50e00542ec7f199be7efebaNRAL"
+}
+
+module "asg-prod" {
+  source              = "./module/asg-prod"
+  prod-lt-name        = "${local.name}-prod-LT"
+  ami-redhat-id       = "ami-013d87f7217614e10"
+  instance_type       = "t2.medium"
+  prod-lt-sg          = [module.security-group.Docker-SG-id]
+  keypair_name        = module.vpc.key_name
+  prod-asg-name       = "${local.name}-prod-ASG"
+  vpc-zone-identifier = [module.vpc.private_subnet1_id , module.vpc.private_subnet2_id]
+  tg-arn              = [module.prod-alb.prod-target-group-arn]
+  asg-policy          = "${local.name}-prod-asg-policy"
+  nexus-ip            = module.nexus.nexus_public_ip
+  nr_key              = "c605530d3bdfc50e00542ec7f199be7efebaNRAL"
 }
