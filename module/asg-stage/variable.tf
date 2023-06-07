@@ -1,9 +1,9 @@
-variable "prod-lt-name" {}
+variable "stage-lt-name" {}
 variable "ami-redhat-id" {}
 variable "instance_type" {}
-variable "prod-lt-sg" {}
+variable "stage-lt-sg" {}
 variable "keypair_name" {}
-variable "prod-asg-name" {}
+variable "stage-asg-name" {}
 variable "vpc-zone-identifier" {}
 variable "tg-arn" {}
 variable "asg-policy" {}

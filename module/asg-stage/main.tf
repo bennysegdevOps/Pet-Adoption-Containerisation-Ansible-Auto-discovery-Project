@@ -1,17 +1,17 @@
 # Create Launch Template
-resource "aws_launch_template" "prod_lt" {
-  name_prefix                 = var.prod-lt-name
+resource "aws_launch_template" "stage_lt" {
+  name_prefix                 = var.stage-lt-name
   image_id                    = var.ami-redhat-id
   instance_type               = var.instance_type
-  vpc_security_group_ids      = var.prod-lt-sg
+  vpc_security_group_ids      = var.stage-lt-sg
   key_name                    = var.keypair_name
   user_data                   = local.docker_user_data
 
 }
 
 #Create AutoScaling Group
-resource "aws_autoscaling_group" "prod-asg" {
-  name                      = var.prod-asg-name
+resource "aws_autoscaling_group" "stage-asg" {
+  name                      = var.stage-asg-name
   desired_capacity          = 2
   max_size                  = 4
   min_size                  = 1
@@ -21,12 +21,12 @@ resource "aws_autoscaling_group" "prod-asg" {
   vpc_zone_identifier       = var.vpc-zone-identifier
   target_group_arns         = var.tg-arn
     launch_template {
-    id      = aws_launch_template.prod_lt.id
+    id      = aws_launch_template.stage_lt.id
     version = "$Latest"
   }
   tag{
     key                 = "Name"
-    value               = "prod-instance"
+    value               = "stage-instance"
     propagate_at_launch = true
   }
 }
@@ -36,7 +36,7 @@ resource "aws_autoscaling_policy" "asg-policy" {
   name                      =  var.asg-policy
   adjustment_type           = "ChangeInCapacity"
   policy_type               = "TargetTrackingScaling"
-  autoscaling_group_name    = aws_autoscaling_group.prod-asg.id
+  autoscaling_group_name    = aws_autoscaling_group.stage-asg.id
   target_tracking_configuration {
     predefined_metric_specification {
       predefined_metric_type = "ASGAverageCPUUtilization"
@@ -44,4 +44,3 @@ resource "aws_autoscaling_policy" "asg-policy" {
     target_value = 60.0
   }
 }
-
