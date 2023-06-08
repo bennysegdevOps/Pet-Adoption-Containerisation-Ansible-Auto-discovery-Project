@@ -1,13 +1,7 @@
 variable "subnet1-id" {}
 variable "subnet2-id" {}
 variable "tag-db-subnet-group" {}
-variable "db_identifier" {}
 variable "RDS-SG" {}
 variable "db_name" {}
-variable "db_engine" {}
-variable "db_engine_version" {}
-variable "db_instance_class" {}
 variable "db_username" {}
 variable "db_password" {}
-variable "db_parameter_gp_name" {}
-variable "db_storage_type" {}

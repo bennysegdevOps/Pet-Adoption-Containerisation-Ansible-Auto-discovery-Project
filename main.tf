@@ -1,3 +1,8 @@
+provider "vault" {
+  token = "s.7TU5DHwe2Tc5MspZpupFsmPu"
+  address = "https://wehabot.com"
+}
+
 module "vpc" {
   source              = "./module/vpc"
   vpc_cidr            = "10.0.0.0/16"
@@ -118,22 +123,20 @@ module "nexus" {
   nr_license_key  = "c605530d3bdfc50e00542ec7f199be7efebaNRAL"
 }
 
+data "vault_generic_secret" "my-db-secret" {
+  path = "secret/database"
+}
+
 module "database" {
   source                      = "./module/database"
   subnet1-id                  = module.vpc.private_subnet1_id
   subnet2-id                  = module.vpc.private_subnet2_id
   tag-db-subnet-group         = "${local.name}-dbsubnet-group"
-  db_identifier               = "pacpaad-db"
   RDS-SG                      = module.security-group.MySQL-SG-id
   db_name                     = "auto-discovery-db"
-  db_engine                   = "mysql"
-  db_engine_version           = "5.7"
-  db_instance_class           = "db.t3.micro"
-  db_username                 = "admin"
-  db_password                 = "Admin123@"
-  db_parameter_gp_name        = "default.mysql5.7"
-  db_storage_type             = "gp2"
-}
+  db_username                 = data.vault_generic_secret.my-db-secret.data["username"]
+  db_password                 = data.vault_generic_secret.my-db-secret.data["password"]
+ }
 
 module "route53" {
   source            = "./module/route53"

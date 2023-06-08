@@ -7,7 +7,7 @@ variable "profile" {
 }
 
 variable "public-key" {
-  default = file("~/Keypairs/vault-key.pub")
+  default = "~/Keypairs/vault-key.pub"
 }
 
 variable "all_cidr" {
@@ -18,7 +18,7 @@ variable "port_ssh" {
   default = "22"
 }
 
-# proxy port for Jenkins and Docker 
+# proxy port for vault
 variable "port_vault" {
   default = "8200"
 }
@@ -45,4 +45,8 @@ variable "instance_type" {
 
 variable "domain_name" {
   default = "wehabot.com"
+}
+
+variable "aws_region" {
+  default = "eu-west-1"
 }
