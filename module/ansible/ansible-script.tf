@@ -58,6 +58,5 @@ sudo curl -o /etc/yum.repos.d/newrelic-infra.repo https://download.newrelic.com/
 sudo yum -q makecache -y --disablerepo='*' --enablerepo='newrelic-infra'
 sudo yum install newrelic-infra -y --nobest
 sudo hostnamectl set-hostname ansible
-
 EOF
 }

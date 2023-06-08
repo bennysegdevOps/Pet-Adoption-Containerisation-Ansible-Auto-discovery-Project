@@ -12,7 +12,7 @@ resource "aws_iam_group" "group" {
 
 resource "aws_iam_user_group_membership" "user" {
   user  = aws_iam_user.user.name
-  group = [aws_iam_group.group.name]
+  groups = [aws_iam_group.group.name]
 }
 
 resource "aws_iam_group_policy_attachment" "policy" {

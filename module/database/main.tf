@@ -10,18 +10,18 @@ resource "aws_db_subnet_group" "db-subnet" {
 
 # MySQL RDS database 
 resource "aws_db_instance" "mysql_db" {
-  identifier                = var.db_identifier
+  identifier                = "multi-az-rds"
   db_subnet_group_name      = aws_db_subnet_group.db-subnet.name
   vpc_security_group_ids    = [var.RDS-SG]
   publicly_accessible       = false 
   skip_final_snapshot       = true
   allocated_storage         = 10
   db_name                   = var.db_name
-  engine                    = var.db_engine
-  engine_version            = var.db_engine_version
-  instance_class            = var.db_instance_class
+  engine                    = "mysql"
+  engine_version            = "5.7"
+  instance_class            = "db.t3.micro"
   username                  = var.db_username
   password                  = var.db_password
-  parameter_group_name      = var.db_parameter_gp_name
-  storage_type              = var.db_storage_type
+  parameter_group_name      = "default.mysql5.7"
+  storage_type              = "gp2"
 }

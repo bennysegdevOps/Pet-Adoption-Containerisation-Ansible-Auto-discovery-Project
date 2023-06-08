@@ -36,7 +36,7 @@ sudo apt update
 sudo apt-get install software-properties-common
 sudo add-apt-repository universe
 sudo apt-get install certbot -y
-sudo certbot certonly --standalone -d teemone.xyz --email amanzeedward@yahoo.com --agree-tos --non-interactive
+sudo certbot certonly --standalone -d wehabot.com --email bennyseg@yahoo.com --agree-tos --non-interactive
 sudo wget https://releases.hashicorp.com/vault/1.5.0/vault_1.5.0_linux_amd64.zip
 sudo unzip vault_1.5.0_linux_amd64.zip
 sudo mv vault /usr/bin/
@@ -49,8 +49,8 @@ storage "consul" {
 listener "tcp"{
           address = "0.0.0.0:443"
           tls_disable = 0
-          tls_cert_file = "/etc/letsencrypt/live/teemone.xyz/fullchain.pem"
-          tls_key_file = "/etc/letsencrypt/live/teemone.xyz/privkey.pem"
+          tls_cert_file = "/etc/letsencrypt/live/wehabot.com/fullchain.pem"
+          tls_key_file = "/etc/letsencrypt/live/wehabot.com/privkey.pem"
 }
 seal "awskms" {
   region     = "${var.aws_region}"
@@ -74,9 +74,9 @@ WantedBy=multi-user.target
 EOT
 
 sudo systemctl daemon-reload
-export VAULT_ADDR="https://teemone.xyz:443"
+export VAULT_ADDR="https://wehabot.com:443"
 cat << EOT > /etc/profile.d/vault.sh
-export VAULT_ADDR="https://teemone.xyz:443"
+export VAULT_ADDR="https://wehabot.com:443"
 export VAULT_SKIP_VERIFY=true
 EOT
 vault -autocomplete-install

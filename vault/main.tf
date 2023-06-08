@@ -6,7 +6,7 @@ provider "aws" {
 #EC2 keypair
 resource "aws_key_pair" "vault-keypair" {
   key_name = "vault-keypair"
-  public_key = var.public-key
+  public_key = file(var.public-key)
 }
 
 #Security group for Vault
@@ -69,7 +69,7 @@ resource "aws_instance" "vault" {
   user_data                 = local.vault_user_data
   
   tags = {
-    Name = "${local.name}-vault-server"
+    Name = "vault-server"
   }
 }
 
