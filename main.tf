@@ -73,6 +73,16 @@ module "ansible" {
   ansible-SG        = module.security-group.Bastion-Ansible_SG-id
   subnetid          = module.vpc.public_subnet2_id
   ansible-server    = "${local.name}-ansible"
+  stage-playbook    = "${path.root}/module/ansible/stage-playbook.yml"
+  prod-playbook     = "${path.root}/module/ansible/prod-playbook.yml"
+  stage-bash-script = "${path.root}/module/ansible/stage-bash-script.sh"
+  prod-bash-script  = "${path.root}/module/ansible/prod-bash-script.sh"
+  stage-trigger     = "${path.root}/module/ansible/stage-trigger.yml"
+  prod-trigger      = "${path.root}/module/ansible/prod-trigger.yml"
+  password          = "${path.root}/module/ansible/password.yml"
+  private-key       = "file(~/Keypairs/pacpaad)"
+  nexus-ip          = module.nexus.nexus_public_ip
+  nr_license_key    = "c605530d3bdfc50e00542ec7f199be7efebaNRAL"
 }
 
 module "jenkins" {
