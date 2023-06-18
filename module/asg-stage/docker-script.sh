@@ -1,5 +1,3 @@
-locals {
-  docker_user_data = <<-EOF
 #!/bin/bash
 # update and upgrade yum packages, install yum-utils, config manager and docker
 sudo yum update -y
@@ -11,7 +9,7 @@ sudo yum install docker-ce -y
 #This configuration file will allow docker communicate with nexus repo over HTTP connection
 sudo cat <<EOT>> /etc/docker/daemon.json
 {
-  "insecure-registries" : ["${var.nexus-ip}:8085"]
+  "insecure-registries" : ["${var1}:8085"]
 }
 EOT
 
@@ -21,10 +19,8 @@ sudo systemctl enable docker
 sudo usermod -aG docker ec2-user
 
 #Install New relic
-echo "license_key: ${var.nr_key}" | sudo tee -a /etc/newrelic-infra.yml
+echo "license_key: ${var2}" | sudo tee -a /etc/newrelic-infra.yml
 sudo curl -o /etc/yum.repos.d/newrelic-infra.repo https://download.newrelic.com/infrastructure_agent/linux/yum/el/7/x86_64/newrelic-infra.repo
 sudo yum -q makecache -y --disablerepo='*' --enablerepo='newrelic-infra'
 sudo yum install newrelic-infra -y --nobest
-sudo hostnamectl set-hostname prod-instance
-EOF
-}
+sudo hostnamectl set-hostname stage-instance

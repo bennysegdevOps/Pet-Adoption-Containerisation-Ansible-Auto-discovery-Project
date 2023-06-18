@@ -5,8 +5,7 @@ resource "aws_launch_template" "prod_lt" {
   instance_type               = var.instance_type
   vpc_security_group_ids      = var.prod-lt-sg
   key_name                    = var.keypair_name
-  user_data                   = local.docker_user_data
-
+  user_data                   = base64encode(templatefile("${path.root}/module/asg-prod/docker-script.sh", {var1 = var.nexus-ip, var2 = var.nr_key}))
 }
 
 #Create AutoScaling Group
@@ -44,4 +43,3 @@ resource "aws_autoscaling_policy" "asg-policy" {
     target_value = 60.0
   }
 }
-

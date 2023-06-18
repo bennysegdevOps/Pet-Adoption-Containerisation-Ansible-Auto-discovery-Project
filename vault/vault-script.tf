@@ -36,7 +36,7 @@ sudo apt update
 sudo apt-get install software-properties-common
 sudo add-apt-repository universe
 sudo apt-get install certbot -y
-sudo certbot certonly --standalone -d wehabot.com --email bennyseg@yahoo.com --agree-tos --non-interactive
+sudo certbot certonly --standalone -d wehabot.com --email bennyseg@outlook.com --agree-tos --non-interactive
 sudo wget https://releases.hashicorp.com/vault/1.5.0/vault_1.5.0_linux_amd64.zip
 sudo unzip vault_1.5.0_linux_amd64.zip
 sudo mv vault /usr/bin/
