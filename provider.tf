@@ -1,8 +1,8 @@
 provider "aws" {
-  profile   = "default"
-  region    = "eu-west-1"
+  profile = "Team2access"
+  region  = "eu-west-1"
 }
 
 locals {
-  name      = "benny-pacpaad" 
+  name = "benny-pacpaad"
 }
