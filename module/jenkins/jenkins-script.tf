@@ -7,8 +7,8 @@ sudo yum install wget -y
 sudo yum install git -y
 sudo yum install maven -y
 sudo yum install java-11-openjdk -y
-sudo wget https://get.jenkins.io/redhat/jenkins-2.346-1.1.noarch.rpm
-sudo rpm -ivh jenkins-2.346-1.1.noarch.rpm
+sudo wget https://get.jenkins.io/redhat/jenkins-2.411-1.1.noarch.rpm
+sudo rpm -ivh jenkins-2.411-1.1.noarch.rpm
 sudo yum install jenkins
 sudo systemctl daemon-reload
 sudo systemctl start jenkins
