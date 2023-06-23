@@ -5,6 +5,8 @@ locals {
 # update instance and install ansible
 sudo yum update -y
 sudo dnf install -y ansible-core
+sudo yum install python-pip -y
+sudo -E pip3 install pexpect
 
 # install wget, unzip and aws cli
 sudo yum install wget -y
@@ -33,7 +35,7 @@ sudo echo "${file(var.prod-bash-script)}" >> /etc/ansible/prod-bash-script.sh
 sudo echo "${file(var.stage-trigger)}" >> /etc/ansible/stage-trigger.yml
 sudo echo "${file(var.prod-trigger)}" >> /etc/ansible/prod-trigger.yml
 sudo echo "${file(var.password)}" >> /etc/ansible/password.yml
-sudo echo "${var.private-key}" >> /etc/ansible/keypair
+sudo echo "${file(var.private-key)}" >> /etc/ansible/key.pem
 sudo bash -c 'echo "NEXUS_IP: ${var.nexus-ip}:8085" > /etc/ansible/ansible_vars_file.yml'
 
 # pass.txt
@@ -44,7 +46,7 @@ rm -rvf /etc/ansible/pass.txt
 
 # giving right permission to ansible
 sudo chown -R ec2-user:ec2-user /etc/ansible 
-sudo chmod 400 /etc/ansible/keypair
+sudo chmod 400 /etc/ansible/key.pem
 sudo chmod 755 /etc/ansible/stage-bash-script.sh 
 sudo chmod 755 /etc/ansible/prod-bash-script.sh 
 

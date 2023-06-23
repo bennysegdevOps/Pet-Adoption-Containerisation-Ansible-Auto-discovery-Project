@@ -3,7 +3,7 @@
 
 AWSBIN='/usr/local/bin/aws'
 awsDiscovery() {
-        \$AWSBIN ec2 describe-instances --filters Name=tag:aws:autoscaling:groupName,Values=us-petclinic-stage-asg \\
+        \$AWSBIN ec2 describe-instances --filters Name=tag:aws:autoscaling:groupName,Values=benny-pacpaad-stage-ASG \\
                 --query Reservations[*].Instances[*].NetworkInterfaces[*].{PrivateIpAddresses:PrivateIpAddress} > /etc/ansible/stage-ips.list
         }
 inventoryUpdate() {
