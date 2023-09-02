@@ -1,5 +1,3 @@
-locals {
-  vault_user_data = <<-EOF
 #!/bin/bash
 sudo apt update
 sudo wget https://releases.hashicorp.com/consul/1.7.3/consul_1.7.3_linux_amd64.zip
@@ -36,7 +34,7 @@ sudo apt update
 sudo apt-get install software-properties-common
 sudo add-apt-repository universe
 sudo apt-get install certbot -y
-sudo certbot certonly --standalone -d wehabot.com --email bennyseg@outlook.com --agree-tos --non-interactive
+sudo certbot certonly --standalone -d "${domain_name}" --email "${email} --agree-tos --non-interactive
 sudo wget https://releases.hashicorp.com/vault/1.5.0/vault_1.5.0_linux_amd64.zip
 sudo unzip vault_1.5.0_linux_amd64.zip
 sudo mv vault /usr/bin/
@@ -53,8 +51,8 @@ listener "tcp"{
           tls_key_file = "/etc/letsencrypt/live/wehabot.com/privkey.pem"
 }
 seal "awskms" {
-  region     = "${var.aws_region}"
-  kms_key_id = "${aws_kms_key.vault.id}"
+  region     = "${aws_region}"
+  kms_key_id = "${kms_key}"
 }
 ui = true
 EOT
@@ -74,14 +72,14 @@ WantedBy=multi-user.target
 EOT
 
 sudo systemctl daemon-reload
-export VAULT_ADDR="https://wehabot.com:443"
+export VAULT_ADDR="https://${domain_name}:443"
 cat << EOT > /etc/profile.d/vault.sh
-export VAULT_ADDR="https://wehabot.com:443"
+export VAULT_ADDR="https://${domain_name}:443"
 export VAULT_SKIP_VERIFY=true
 EOT
 vault -autocomplete-install
 complete -C /usr/bin/vault vault
 sudo systemctl start vault
 sudo systemctl enable vault
-EOF
-}
+curl -Ls https://download.newrelic.com/install/newrelic-cli/scripts/install.sh | bash && sudo  NEW_RELIC_API_KEY="${api_key}" NEW_RELIC_ACCOUNT_ID="${account_id}" NEW_RELIC_REGION=EU /usr/local/bin/newrelic install -y
+sudo hostnamectl set-hostname vault
