@@ -66,7 +66,14 @@ resource "aws_instance" "vault" {
   key_name                  = aws_key_pair.vault-keypair.key_name
   iam_instance_profile      = aws_iam_instance_profile.vault-kms-unseal.id
   associate_public_ip_address = true
-  user_data                 = local.vault_user_data
+  user_data                 = templatefile ("./vault-script.sh" , {
+   domain_name = var.domain_name,
+   email = var.email,
+   aws_region = var.aws_region,
+   kms_key = aws_kms_key.vault.id,
+   api_key = var.api_key,
+   account_id = var.account_id
+  })
   
   tags = {
     Name = "vault-server"
