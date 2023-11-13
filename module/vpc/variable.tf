@@ -6,9 +6,7 @@ variable "availability_zone_2" {}
 variable "priv_sub1_cidr" {}
 variable "priv_sub2_cidr" {}
 variable "all_cidr" {}
-variable "key_name" {}
-variable "public_key" {}
-variable "private_key" {}
+variable "keypair-name" {}
 variable "tag-vpc" {}
 variable "tag-public_subnet1" {}
 variable "tag-public_subnet2" {}

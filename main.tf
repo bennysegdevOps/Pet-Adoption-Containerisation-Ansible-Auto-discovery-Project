@@ -13,9 +13,7 @@ module "vpc" {
   priv_sub1_cidr      = "10.0.3.0/24"
   priv_sub2_cidr      = "10.0.4.0/24"
   all_cidr            = "0.0.0.0/0"
-  key_name            = "benny_keypair"
-  public_key          = "file(~/Keypairs/pacpaad.pub)"
-  private_key         = "file(~/Keypairs/pacpaad)"
+  keypair-name        = "benny_keypair"
   tag-vpc             = "${local.name}-vpc"
   tag-public_subnet1  = "${local.name}-public_subnet1"
   tag-public_subnet2  = "${local.name}-public_subnet2"
@@ -56,7 +54,7 @@ module "bastion-host" {
   key-name      = module.vpc.key_name
   bastion-SG    = module.security-group.Bastion-Ansible_SG-id
   subnetid      = module.vpc.public_subnet1_id
-  private_key   = "file(~/Keypairs/pacpaad)"
+  private_key   = module.vpc.private-keypair
   tag-bastion   = "${local.name}-bastion"
 }
 
@@ -85,7 +83,7 @@ module "ansible" {
   stage-trigger     = "${path.root}/module/ansible/stage-trigger.yml"
   prod-trigger      = "${path.root}/module/ansible/prod-trigger.yml"
   password          = "${path.root}/module/ansible/password.yml"
-  private-key       = "file(~/Keypairs/pacpaad)"
+  private-key       = module.vpc.private-keypair
   nexus-ip          = module.nexus.nexus_public_ip
   nr_license_key    = "c605530d3bdfc50e00542ec7f199be7efebaNRAL"
 }
