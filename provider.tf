@@ -1,5 +1,5 @@
 provider "aws" {
-  profile = "Team2access"
+  profile = "default"
   region  = "eu-west-1"
 }
 

@@ -4,6 +4,9 @@ variable "region" {
 variable "profile" {
   default = "default"
 }
+variable "keypair_name" {
+  default = "vault"
+}
 variable "public-key" {
   default = "~/Keypairs/vault-key.pub"
 }
@@ -13,6 +16,7 @@ variable "all_cidr" {
 variable "port_ssh" {
   default = "22"
 }
+# proxy port for vault
 variable "port_vault" {
   default = "8200"
 }
@@ -31,18 +35,15 @@ variable "vault-ami" {
 variable "instance_type" {
   default = "t2.medium"
 }
-variable "domain_name" {
+variable "domain" {
   default = "wehabot.com"
 }
-variable "aws_region" {
-  default = "eu-west-1"
-}
 variable "email" {
-  default = ""
+  default = "bennyseg@outlook.com"
 }
 variable "api_key" {
-  default = ""
+  default = "NRAK-FR06W78I19M8CXPM4RR6B6MN96Q"
 }
 variable "account_id" {
-  default = ""
+  default = "3929947"
 }

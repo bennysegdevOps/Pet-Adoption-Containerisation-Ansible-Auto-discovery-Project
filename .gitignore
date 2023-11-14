@@ -4,6 +4,15 @@
 # .tfstate files
 *.tfstate
 *.tfstate.*
+**/.terraform/*
+*.terraform
+*.terraform.*
+terraform.*
+.terraform.*
+*.DS_Store
+vault_keypair.pem
+keypair.pem
+.terraform.lock.hcl
 
 # Crash log files
 crash.log
