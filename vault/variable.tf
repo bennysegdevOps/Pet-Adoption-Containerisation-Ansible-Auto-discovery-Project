@@ -7,6 +7,9 @@ variable "profile" {
 variable "keypair_name" {
   default = "vault"
 }
+variable "public-key" {
+  default = "~/Keypairs/vault-key.pub"
+}
 variable "all_cidr" {
   default = "0.0.0.0/0"
 }

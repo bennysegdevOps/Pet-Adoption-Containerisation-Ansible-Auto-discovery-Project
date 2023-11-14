@@ -1,5 +1,5 @@
 provider "vault" {
-  token   = "s.Yfz0lzX2j9WYM7YDaSx9sMC0"
+  token   = ""
   address = "https://wehabot.com"
 }
 

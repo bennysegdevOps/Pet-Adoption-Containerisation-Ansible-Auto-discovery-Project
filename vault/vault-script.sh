@@ -48,6 +48,7 @@ sudo apt-get install certbot -y
 sudo certbot certonly --standalone -d "${domain}" --email "${email}" --agree-tos --non-interactive
 
 # Install Vault
+
 sudo wget https://releases.hashicorp.com/vault/1.5.0/vault_1.5.0_linux_amd64.zip
 sudo unzip vault_1.5.0_linux_amd64.zip
 sudo mv vault /usr/bin/
@@ -68,6 +69,12 @@ listener "tcp"{
 seal "awskms" {
     region     = "${region}"
     kms_key_id = "${kms_key}"
+          tls_cert_file = "/etc/letsencrypt/live/wehabot.com/fullchain.pem"
+          tls_key_file = "/etc/letsencrypt/live/wehabot.com/privkey.pem"
+}
+seal "awskms" {
+  region     = "${aws_region}"
+  kms_key_id = "${kms_key}"
 }
 ui = true
 EOT
@@ -96,6 +103,13 @@ EOT
 
 sudo vault -autocomplete-install
 sudo complete -C /usr/bin/vault vault
+export VAULT_ADDR="https://${domain_name}:443"
+cat << EOT > /etc/profile.d/vault.sh
+export VAULT_ADDR="https://${domain_name}:443"
+export VAULT_SKIP_VERIFY=true
+EOT
+vault -autocomplete-install
+complete -C /usr/bin/vault vault
 sudo systemctl start vault
 sudo systemctl enable vault
 curl -Ls https://download.newrelic.com/install/newrelic-cli/scripts/install.sh | bash && sudo  NEW_RELIC_API_KEY="${api_key}" NEW_RELIC_ACCOUNT_ID="${account_id}" NEW_RELIC_REGION=EU /usr/local/bin/newrelic install -y
